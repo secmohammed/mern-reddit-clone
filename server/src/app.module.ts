@@ -6,11 +6,13 @@ import { PubSub } from 'graphql-subscriptions';
 import { GraphQLErrorFilter } from './shared/filters/graphql-exception.filter';
 import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
 import { UsersModule } from './users/user.module';
+import { PostsModule } from './posts/post.module';
 import { redis } from './shared/utils/redis';
 import { RedisCache } from 'apollo-server-cache-redis';
 
 const ormconfig = require('../ormconfig.json');
 import { config } from './shared/config'
+import { VotesModule } from './votes/votes.module';
 @Module({
   imports: [
     GraphQLModule.forRoot({
@@ -28,6 +30,8 @@ import { config } from './shared/config'
 
     TypeOrmModule.forRoot(ormconfig[0]),
     UsersModule,
+    PostsModule,
+    VotesModule,
   ],
   providers: [
     {

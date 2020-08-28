@@ -14,7 +14,6 @@ import { LoginFormRequest } from './validation/login.validation';
 import { RegisterFormRequest } from './validation/register.validation';
 import { UserEntity as User } from './user.entity';
 
-
 @Injectable()
 export class UserService {
   constructor(
@@ -22,7 +21,7 @@ export class UserService {
     private readonly users: Repository<User>,
   ) {}
   async get() {
-    return this.users.find({ relations: ['teams', 'messages'] });
+    return this.users.find();
   }
   async login({ email, password }: LoginFormRequest): Promise<UserDTO> {
     const user = await this.users.findOneOrFail({
@@ -61,10 +60,12 @@ export class UserService {
     user = await this.users.save(user);
     return user.toResponseObject() as UserDTO;
   }
-
+  async findById(id: string): Promise<UserDTO> {
+    const user = await this.users.findOneOrFail(id);
+    return user.toResponseObject(false) as UserDTO;
+  }
   async me({ id }: any): Promise<UserDTO> {
-    const user = await this.users.findOneOrFail(id, {
-    });
+    const user = await this.users.findOneOrFail(id, {});
     return user.toResponseObject(false) as UserDTO;
   }
 }

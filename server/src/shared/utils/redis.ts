@@ -1,2 +1,3 @@
 import Redis from 'ioredis';
-export const redis = new Redis({ host: '127.0.0.1' });
+import { config } from '../config'
+export const redis = new Redis({ host: config.REDIS_URL});
