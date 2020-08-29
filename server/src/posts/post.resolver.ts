@@ -17,11 +17,14 @@ import { PostEntity } from './post.entity';
 import { PostService } from './post.service';
 import { UserService } from '../users/user.service';
 import { VoteDTO } from '../votes/vote.dto'
+import { VotesService} from '../votes/votes.service'
+import { VoteEntity } from '../votes/votes.entity'
 @Resolver(() => PostEntity)
 export class PostResolver {
   constructor(
     private readonly postService: PostService,
     private readonly userService: UserService,
+    private readonly voteService: VotesService
   ) {}
 
   @Query(() => [PostEntity])
@@ -51,8 +54,8 @@ export class PostResolver {
     return this.postService.delete(id)
   }
   @ResolveField(() => [VoteDTO])
-  votes(@Parent() parent: PostEntity): Promise<VoteDTO[]> {
-    return  parent.votes.then((votes) => votes)
+  votes(@Parent() parent: PostEntity): Promise<void | VoteDTO[]> {
+    return this.voteService.findVotesFor(parent.id, 'post');
   }
   @ResolveField()
   user(@Parent() post: PostEntity) {

@@ -50,7 +50,7 @@ export class VotesResolver {
   }
   @ResolveField(() => PostDTO)
   post(@Parent() parent: VoteDTO) {
-    return this.postService.show(parent.postId);
+    return this.postService.show(parent.voteableId);
   }
   @ResolveField(() => UserDTO)
   user(@Parent() parent: VoteDTO) {

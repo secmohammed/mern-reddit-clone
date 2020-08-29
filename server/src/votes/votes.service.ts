@@ -17,13 +17,14 @@ export class VotesService {
   ) {}
 
   async create(
-    { status, postId }: { status: Status; postId: string },
+    { status, voteableId, voteableType }: { status: Status; voteableId: string, voteableType },
     userId: string,
   ): Promise<VoteDTO> {
     let vote = await this.votes.create({
       status,
       userId,
-      postId
+      voteableId,
+      voteableType
     });
     await this.votes.save(vote);
     return vote;
@@ -35,6 +36,12 @@ export class VotesService {
       .catch(err => {
         throw new HttpException(err, 401);
       });
+  }
+  async findVotesFor(id: string, type: string) {
+      return this.votes.find({
+          voteableId: id,
+          voteableType: type
+      })
   }
   async show(id: string): Promise<VoteDTO> {
     return this.votes.findOneOrFail(id);

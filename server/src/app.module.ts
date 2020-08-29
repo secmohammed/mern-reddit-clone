@@ -13,6 +13,7 @@ import { RedisCache } from 'apollo-server-cache-redis';
 const ormconfig = require('../ormconfig.json');
 import { config } from './shared/config'
 import { VotesModule } from './votes/votes.module';
+import { CommentsModule } from './comments/comments.module';
 @Module({
   imports: [
     GraphQLModule.forRoot({
@@ -32,6 +33,7 @@ import { VotesModule } from './votes/votes.module';
     UsersModule,
     PostsModule,
     VotesModule,
+    CommentsModule,
   ],
   providers: [
     {

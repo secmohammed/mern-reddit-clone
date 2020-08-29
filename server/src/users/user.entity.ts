@@ -9,6 +9,8 @@ import {
   BeforeInsert,
   OneToMany,
 } from 'typeorm';
+
+import { CommentEntity } from '../comments/comments.entity'
 import { PostEntity as Post} from '../posts/post.entity'
 import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
@@ -32,6 +34,9 @@ export class UserEntity extends BaseEntity {
   @OneToMany(type => Post, post => post.user)
   @Field(() => [Post], { defaultValue: [] })
   posts: Promise<Post[]>;
+  @OneToMany(type => CommentEntity, comment => comment.user)
+  @Field(() => [CommentEntity], { defaultValue: [] })
+  comments: Promise<CommentEntity[]>;
   @OneToMany(type => VoteEntity, vote => vote.user)
   @Field(() => [VoteEntity], { defaultValue: [] })
   votes: Promise<VoteEntity[]>;
