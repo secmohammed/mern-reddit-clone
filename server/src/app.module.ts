@@ -14,6 +14,8 @@ const ormconfig = require('../ormconfig.json');
 import { config } from './shared/config'
 import { VotesModule } from './votes/votes.module';
 import { CommentsModule } from './comments/comments.module';
+import { ChannelsResolver } from './channels/channels.resolver';
+import { ChannelsModule } from './channels/channels.module';
 @Module({
   imports: [
     GraphQLModule.forRoot({
@@ -34,6 +36,7 @@ import { CommentsModule } from './comments/comments.module';
     PostsModule,
     VotesModule,
     CommentsModule,
+    ChannelsModule,
   ],
   providers: [
     {

@@ -21,6 +21,9 @@ export class CommentsService {
     await this.comments.save(comment);
     return comment;
   }
+  async show(commentId: string) {
+    return this.comments.findOneOrFail(commentId)
+  }
   async update(
     { body }: UpdateCommentFormRequest,
     commentId: string,

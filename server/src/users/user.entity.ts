@@ -8,15 +8,17 @@ import {
   PrimaryGeneratedColumn,
   BeforeInsert,
   OneToMany,
+  ManyToMany,
 } from 'typeorm';
-
-import { CommentEntity } from '../comments/comments.entity'
-import { PostEntity as Post} from '../posts/post.entity'
+import { ChannelEntity } from '../channels/channels.entity';
+import { CommentEntity } from '../comments/comments.entity';
+import { PostEntity as Post } from '../posts/post.entity';
 import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { UserDTO } from './user.dto';
 import { config } from '../shared/config';
-import { VoteEntity } from '../votes/votes.entity'
+import { VoteEntity } from '../votes/votes.entity';
+import { ChannelUserEntity } from '../channels/channels.entity'
 @Entity('users')
 @ObjectType()
 export class UserEntity extends BaseEntity {
@@ -31,13 +33,32 @@ export class UserEntity extends BaseEntity {
   email: string;
   @Column('text')
   password: string;
-  @OneToMany(type => Post, post => post.user)
+  @OneToMany(
+    type => Post,
+    post => post.user,
+  )
   @Field(() => [Post], { defaultValue: [] })
   posts: Promise<Post[]>;
-  @OneToMany(type => CommentEntity, comment => comment.user)
+  @OneToMany(
+    type => CommentEntity,
+    comment => comment.user,
+  )
   @Field(() => [CommentEntity], { defaultValue: [] })
   comments: Promise<CommentEntity[]>;
-  @OneToMany(type => VoteEntity, vote => vote.user)
+  @OneToMany(() => ChannelUserEntity, channel => channel.user)
+  @Field(() => [ChannelUserEntity], { defaultValue: [] })
+  channels: Promise<ChannelUserEntity[]>;
+
+  @OneToMany(
+    type => ChannelEntity,
+    channel => channel.user,
+  )
+  @Field(() => [ChannelEntity], { defaultValue: [] })
+  owned_channels: Promise<ChannelEntity[]>;
+  @OneToMany(
+    type => VoteEntity,
+    vote => vote.user,
+  )
   @Field(() => [VoteEntity], { defaultValue: [] })
   votes: Promise<VoteEntity[]>;
 
@@ -66,9 +87,8 @@ export class UserEntity extends BaseEntity {
       created_at,
       updated_at,
     };
-    if(posts) {
+    if (posts) {
       responseObject.posts = posts;
-
     }
     if (showToken) {
       responseObject.auth_token = token;

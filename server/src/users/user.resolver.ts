@@ -28,6 +28,10 @@ export class UserResolver {
   users() {
     return this.userService.get();
   }
+  // @ResolveField()
+  // channels(@Parent() channels: ChannelEntity) {
+    
+  // }
   @ResolveField()
   posts(@Parent() user: UserEntity) {
     return this.postService.findUserPosts(user.id);

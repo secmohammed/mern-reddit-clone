@@ -7,8 +7,9 @@ import { PostService} from '../posts/post.service'
 import { TypeOrmModule } from '@nestjs/typeorm';
 import  { PostEntity } from '../posts/post.entity'
 import { CommentEntity } from '../comments/comments.entity'
+import { ChannelEntity } from '../channels/channels.entity'
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, PostEntity, CommentEntity])],
+  imports: [TypeOrmModule.forFeature([UserEntity, PostEntity, CommentEntity, ChannelEntity])],
   providers: [UserResolver, UserService, PostService],
 })
 export class UsersModule {}
